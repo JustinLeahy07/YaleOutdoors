@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>Library · Yale Outdoors</title>
+<meta name="description" content="The Yale Outdoors constitution, prospectus, safety policy, trip report template and archive.">
+<link rel="icon" href="img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=IM+Fell+English:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="top"><div class="wrap">
+<div class="strap"><span>Yale Outdoors &middot; New Haven, Connecticut</span><span>Outdoors at Yale since 1936</span></div>
+<a class="mast small" href="index.html" aria-label="Yale Outdoors, home"><img src="img/logo-black.png" alt="Yale Outdoors" width="1500" height="803"></a>
+<button type="button" class="menu" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu</button>
+<nav class="nav" id="nav" aria-label="Main"><a href="trips.html">Trips</a><a href="gear.html">Gear</a><a href="join.html">Join</a><a href="people.html">People</a><a href="library.html" aria-current="page">Library</a><a href="history.html">History</a></nav>
+</div></header>
+<main id="main"><div class="wrap">
+<div class="title"><h1>Library</h1><p>The documents that run the club, in one place.</p></div>
+<section>
+<h2>About the club</h2>
+<ul class="docs">
+<li><div><b>Constitution</b><span class="d">Membership, the Board, elections and amendments. Revised May 2026.</span></div><a class="btn sm" href="constitution.html">Read</a></li>
+<li><div><b>The 2009 Prospectus</b><span class="d">A hundred-page case for outdoor life at Yale, with a plan for Winter School.</span></div><a class="btn sm" href="prospectus.html">Read</a></li>
+<li><div><b>Safety and Risk Management Policy</b><span class="d">What every trip needs, how to plan it, and what to do in an emergency.</span></div><a class="btn sm" href="docs/YO-Safety-and-Risk-Management-Policy.pdf">PDF</a></li>
+<li><div><b>Trip reports</b><span class="d">Nine trips from 2006 to 2009, and a place to file new ones.</span></div><a class="btn sm" href="reports.html">Read</a></li>
+</ul>
+</section>
+<section>
+<h2>For Leaders</h2>
+<ul class="docs">
+<li><div><b>Trip report template</b><span class="d">The one-page form every Leader fills in after a trip.</span></div><span class="row"><a class="btn sm" href="docs/YO-Trip-Report-Template.docx" download>Word</a><a class="btn sm" href="docs/YO-Trip-Report-Template.pdf">PDF</a></span></li>
+<li><div><b>Liability waiver template</b><span class="d">The general waiver every participant signs before a trip.</span></div><span class="row"><a class="btn sm" href="docs/YO-General-Liability-Waiver-Template.docx" download>Word</a><a class="btn sm" href="docs/YO-General-Liability-Waiver-Template.pdf">PDF</a></span></li>
+<li><div><b>Submit a trip report online</b><span class="d">The same questions as the template, filled in on the site.</span></div><a class="btn sm" href="reports.html#rForm">Open</a></li>
+</ul>
+</section>
+<section>
+<h2>For everyone</h2>
+<ul class="docs">
+<li><div><b>Join and lead</b><span class="d">How membership works, from the mailing list to the Board.</span></div><a class="btn sm" href="join.html">Read</a></li>
+<li><div><b>Gear rentals</b><span class="d">What is free on your dates, and how to request it.</span></div><a class="btn sm" href="gear.html">Open</a></li>
+<li><div><b>History, alumni and giving</b><span class="d">Where the club has been, and how to stay in touch.</span></div><a class="btn sm" href="history.html">Read</a></li>
+</ul>
+</section>
+
+</div></main>
+<footer class="foot"><div class="wrap">
+<div class="grid">
+<div><h4>Yale Outdoors</h4>
+<p>The outing club for everyone at Yale. Run by students.</p>
+<p><a href="mailto:yaleoutdoors@gmail.com">yaleoutdoors@gmail.com</a></p>
+<p><button type="button" class="lnk small" id="copyClub">Copy email</button></p></div>
+<div><h4>Pages</h4><a href="trips.html">Trips</a><a href="gear.html">Gear rentals</a><a href="join.html">Join and lead</a><a href="people.html">The board</a><a href="library.html">Library</a><a href="history.html">History, alumni and giving</a></div>
+<div><h4>Elsewhere</h4><a href="https://forms.gle/SaASJQefPbpXcXjK9">Weekly newsletter</a><a href="https://tinyurl.com/ycyogroupme">GroupMe</a><a href="https://www.instagram.com/yaleoutdoors/">Instagram</a><a href="https://yaleconnect.yale.edu/YCYO/club_signup">Yale Connect</a></div>
+</div>
+<div class="gate" id="gate" hidden><form id="gateForm" autocomplete="off"><label for="gateKey">Board key<input type="password" id="gateKey" autocomplete="off"></label>
+<div class="row" style="margin-top:10px"><button type="submit" class="btn sm solid">Turn on editing</button></div><p class="small muted" id="gateMsg" style="margin:8px 0 0"></p></form></div>
+<div class="mini"><span>Yale Outdoors &middot; a student organization at Yale University</span><span><a href="#" id="gateBtn">Board login</a> </span></div>
+</div></footer>
+<script src="content.js"></script>
+<script src="site.js"></script>
+</body>
+</html>
