@@ -45,7 +45,7 @@ $$('.trail-card').forEach(function(card){
 });
 $$('[role="tablist"]').forEach(function(list){
   var tabs=$$('[role="tab"]',list);
-  function select(tab,focus){tabs.forEach(function(t){var on=t===tab;t.setAttribute('aria-selected',String(on));t.tabIndex=on?0:-1;var panel=document.getElementById(t.getAttribute('aria-controls'));if(panel)panel.hidden=!on});if(focus)tab.focus()}
+  function select(tab,focus){tabs.forEach(function(t){var on=t===tab;t.setAttribute('aria-selected',String(on));t.tabIndex=on?0:-1;var panel=document.getElementById(t.getAttribute('aria-controls'));if(panel)panel.hidden=!on});if(focus)tab.focus({preventScroll:true})}
   tabs.forEach(function(tab,i){
     tab.addEventListener('click',function(){select(tab,false)});
     tab.addEventListener('keydown',function(e){

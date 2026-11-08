@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="540" height="420" viewBox="0 0 540 420" fill="none" stroke="#354b37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <defs>
+    <g id="pine" stroke-width="1.5">
+      <path d="M0 0L-11 27 -4 24 -20 48 -8 44 -28 72 -1 63 M0 0L12 28 5 24 22 50 9 44 29 73 2 63 M0 9L1 86"/>
+    </g>
+  </defs>
+  <g stroke="#7c8467" stroke-width="1.4">
+    <path d="m40 219 39-39 25 8 55-76 23 23 28-11 41 57M332 119l30-30 47 62 28-10 60 75"/>
+    <path d="m142 137 18-25 9 24 13-1m198-21 13 22 11-3 5 18"/>
+  </g>
+  <path d="m85 267 71-76 25 11 39-63 24 17 59-88 37 61 13-8 74 114 24-9 47 53"/>
+  <path d="m274 113 29-45 15 38-9 9 18 7 13 7m-120 10 9 26 15-9m-63 46 12 3 11-14"/>
+  <path d="m304 124-16 33-12 8-18 39-17 14-12 26m106-98 12 25 17 15 15 33 17 13 13 26"/>
+  <g stroke-width="1" opacity=".8">
+    <path d="m294 145-8 27m2 1-10 25m1-8-17 33m44-84 7 28m-2-10 10 26m-67 20-15 32m101-58 15 33m-2-12 19 29m-144-65-18 37m4-6-13 29m-11-35-17 30m237-16 14 21m-11-6 18 28"/>
+  </g>
+  <use href="#pine" transform="translate(74 280) scale(.85)"/>
+  <use href="#pine" transform="translate(133 300) scale(.65)"/>
+  <use href="#pine" transform="translate(455 280) scale(.9)"/>
+  <use href="#pine" transform="translate(405 300) scale(.6)"/>
+  <g transform="translate(270 313) scale(0.85)" stroke-width="1.6">
+    <circle cx="1" cy="-34" r="4"/>
+    <!-- Pack rests directly against the back; straps wrap over the shoulder and waist. -->
+    <path d="M-4-27C-12-30-15-26-15-20L-14-13 -6-11 -3-23Z"/>
+    <path d="M-3-28L3-27 1-12 -6-13Z M-9-27Q-1-31 3-25 M-8-14L1-13"/>
+    <path d="M-4-12L3-5 10-3 M-4-12L-9-2 -14 3 M2-24L9-17 16-19 M16-23L18 3"/>
+    <path d="M-13 3L-9 4 M9-3L13-3 M-12-24L-12-18" stroke-width="1"/>
+  </g>
+  <g transform="translate(306 350) scale(1)" stroke-width="1.6">
+    <circle cx="1" cy="-34" r="4"/>
+    <!-- Pack rests directly against the back; straps wrap over the shoulder and waist. -->
+    <path d="M-4-27C-12-30-15-26-15-20L-14-13 -6-11 -3-23Z"/>
+    <path d="M-3-28L3-27 1-12 -6-13Z M-9-27Q-1-31 3-25 M-8-14L1-13"/>
+    <path d="M-4-12L3-5 10-3 M-4-12L-9-2 -14 3 M2-24L9-17 16-19 M16-23L18 3"/>
+    <path d="M-13 3L-9 4 M9-3L13-3 M-12-24L-12-18" stroke-width="1"/>
+  </g>
+  <g transform="translate(340 392) scale(1.12)" stroke-width="1.6">
+    <circle cx="1" cy="-34" r="4"/>
+    <!-- Pack rests directly against the back; straps wrap over the shoulder and waist. -->
+    <path d="M-4-27C-12-30-15-26-15-20L-14-13 -6-11 -3-23Z"/>
+    <path d="M-3-28L3-27 1-12 -6-13Z M-9-27Q-1-31 3-25 M-8-14L1-13"/>
+    <path d="M-4-12L3-5 10-3 M-4-12L-9-2 -14 3 M2-24L9-17 16-19 M16-23L18 3"/>
+    <path d="M-13 3L-9 4 M9-3L13-3 M-12-24L-12-18" stroke-width="1"/>
+  </g>
+</svg>
