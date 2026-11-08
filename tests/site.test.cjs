@@ -19,7 +19,8 @@ function app(nodes = {}) {
   const source = fs.readFileSync('site/site.js', 'utf8').replace(
     '/* ---------- start ---------- */',
     `globalThis.subject = {
-      nDays, free, calc, buildEq, addDateRow, deliver, loadInventory,
+      nDays, free, calc, buildEq, addDateRow, deliver, loadInventory, itemCount, renderBoard, renderUpcoming,
+      events: function(events) { CONTENT={events:events}; },
       configure: function(gear, requests, blocked) { Y.GEAR=gear; lines=requests||[]; BLOCKED=blocked||[]; },
       dateRows: function(rows) { dateRows=rows; },
       api: function(url) { Y.API_URL=url; }
@@ -178,4 +179,45 @@ test('linked cards reveal details on keyboard focus and close with Escape or blu
   link.listeners.focus();
   link.listeners.blur();
   assert.equal(card.flipped, false);
+});
+
+test('gear counter totals quantities and marks only the 12-item limit', () => {
+  const counter = { classList: { toggle(name, on) { counter.atLimit = on; } } };
+  const { subject } = app({ '#gearCount': counter });
+  const requests = [{ qty: 5 }, { qty: 6 }];
+  subject.configure([], requests);
+  subject.renderBoard();
+  assert.equal(counter.textContent, '11 / 12 items');
+  assert.equal(counter.atLimit, false);
+  requests[1].qty = 7;
+  subject.renderBoard();
+  assert.equal(counter.textContent, '12 / 12 items');
+  assert.equal(counter.atLimit, true);
+  requests.pop();
+  subject.renderBoard();
+  assert.equal(counter.textContent, '5 / 12 items');
+  assert.equal(counter.atLimit, false);
+});
+
+test('rental limit counts quantities across lines and rejects more than twelve', () => {
+  const { subject } = app({ '#gSchool': { value: 'college' }, '#gMember': { checked: false }, '#sum': {}, '#c1': {}, '#c2': {} });
+  const requests = [
+    { id: 1, item: 'Tent', qty: 6, from: '2099-01-01', to: '2099-01-03' },
+    { id: 2, item: 'Tent', qty: 6, from: '2099-01-01', to: '2099-01-03' },
+  ];
+  subject.configure([{ name: 'Tent', owned: 30, rate: 7, deposit: 30 }], requests);
+  assert.equal(subject.calc().ok, true);
+  requests[1].qty = 7;
+  assert.equal(subject.calc().ok, false);
+});
+
+test('upcoming events show a fallback immediately and refresh with dated events', () => {
+  const host = {};
+  const { subject } = app({ '#upcoming': host });
+  assert.match(host.innerHTML, /Usual events/);
+  subject.events([{ date: '2099-01-01', title: 'Winter hike', where: 'East Rock' }]);
+  subject.renderUpcoming();
+  assert.match(host.innerHTML, /Winter hike/);
+  assert.match(host.innerHTML, /East Rock/);
+  assert.doesNotMatch(host.innerHTML, /Usual events/);
 });

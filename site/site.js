@@ -65,6 +65,7 @@ if(field){
 
 /* ---------- backend ---------- */
 var CONTENT=null;
+try{var cachedEvents=JSON.parse(store('yoEvents')||'null');if(Array.isArray(cachedEvents))CONTENT={events:cachedEvents}}catch(e){}
 function api(path){return fetch(Y.API_URL+path).then(function(r){return r.json()})}
 function post(obj){return fetch(Y.API_URL,{method:'POST',body:JSON.stringify(obj)}).then(function(r){return r.json()})}
 
@@ -189,12 +190,17 @@ function renderNotice(){
   var nt=$('#noticeNote');
   if(nt)nt.textContent=items.length?(items.length<5?'Dated items come from the club calendar. Items marked by month are our usual events.':'From the club calendar, soonest first.'):'Items marked by month are our usual events. Real dates go out in the weekly newsletter.';
 }
+function usualUpcoming(){
+  var month=new Date().getMonth()+1,next=month%12+1;
+  var usual=(Y.USUAL||[]).filter(function(u){return u.m.indexOf(month)>-1||u.m.indexOf(next)>-1}).slice(0,6);
+  return '<p class="small muted">Usual events around this time of year. Check the newsletter for confirmed dates.</p>'+(usual.length?'<ul class="board-list">'+usual.map(function(u){return '<li><span class="d">'+MON[(u.m.indexOf(month)>-1?month:next)-1]+'</span><div><b>'+esc(u.t)+'</b><span class="t">'+esc(u.n||'')+'</span></div></li>'}).join('')+'</ul>':'');
+}
 function renderUpcoming(){
   var host=$('#upcoming');if(!host)return;
   var evs=allEvents().slice(0,12);
   host.innerHTML=evs.length?'<ul class="board-list">'+evs.map(function(e){
     return '<li><span class="d">'+esc(niceDate(e.date)+(e.end&&e.end!==e.date?' to '+niceDate(e.end):''))+'</span><div><b>'+(e.link?'<a href="'+esc(e.link)+'">'+esc(e.title)+'</a>':esc(e.title))+'</b><span class="t">'+esc(evMeta(e))+'</span></div></li>';
-  }).join('')+'</ul>':'<p class="muted">No dated events are posted yet. The weekly newsletter has the latest, and the usual year is below.</p>';
+  }).join('')+'</ul>':usualUpcoming();
 }
 function fetchGcal(){
   var id=(CONTENT&&CONTENT.site&&CONTENT.site.calendarId)||Y.CAL_ID;
@@ -386,24 +392,27 @@ function free(name,a,b,except){
   });
   return Math.max(0,g.owned-worst);
 }
+function itemCount(){return lines.reduce(function(total,l){return total+(Number.isInteger(l.qty)&&l.qty>0?l.qty:0)},0)}
 function buildBoard(){
   var bl=$('#boardList');if(!bl)return;
   bl.innerHTML=GEARLIST().map(function(g,i){
     return '<li class="gi"><div><b>'+esc(g.name)+'</b><span class="free" id="gf'+i+'"></span></div>'
-     +'<button type="button" class="btn sm" data-add="'+i+'" id="ga'+i+'">Add</button>'
+     +'<div class="gear-buttons"><button type="button" class="btn sm" data-sub="'+i+'" id="gs'+i+'" aria-label="Remove one '+esc(g.name)+'">−</button><button type="button" class="btn sm" data-add="'+i+'" id="ga'+i+'" aria-label="Add one '+esc(g.name)+'">Add</button></div>'
      +'<div class="meter" aria-hidden="true"><i id="gm'+i+'"></i></div></li>';
   }).join('');
   renderBoard();
 }
 function renderBoard(){
+  var counter=$('#gearCount');if(counter){counter.textContent=itemCount()+' / 12 items';counter.classList.toggle('at-limit',itemCount()>=12)}
   if(!bFrom)return;
   var a=bFrom.value,b=bTo.value,days=nDays(a,b),ok=days>0&&days<=120&&a>=today;
-  $('#boardMsg').textContent=ok?'Showing '+plural(days,'day')+' of availability.':days>120?'Rentals longer than four months need to be arranged with the Gear Manager directly.':a<today?'Pickup is in the past.':'Return date must be on or after pickup.';
+  $('#boardMsg').textContent=ok?'':days>120?'Rentals longer than four months need to be arranged with the Gear Manager directly.':a<today?'Pickup is in the past.':'Return date must be on or after pickup.';
   GEARLIST().forEach(function(g,i){
     var f=ok?free(g.name,a,b,-1):g.owned,el=$('#gf'+i);if(!el)return;
     el.textContent=f+' of '+g.owned+' free';
-    var m=$('#gm'+i);m.style.width=(g.owned?f/g.owned*100:0)+'%';m.className=f<=1?'low':'';
-    $('#ga'+i).disabled=!ok||f<1;
+    var m=$('#gm'+i);m.style.width=(g.owned?f/g.owned*100:0)+'%';m.className='';
+    $('#ga'+i).disabled=!ok||f<1||itemCount()>=12;
+    var sub=$('#gs'+i);if(sub)sub.disabled=!lines.some(function(l){return l.item===g.name});
   });
 }
 function priceOf(l){
@@ -417,7 +426,7 @@ function renderLines(){
   if(!lines.length)box.innerHTML='<p class="empty-note">Add gear from the board to start your request.</p>';
   else box.innerHTML=lines.map(function(l){
     return '<div class="line" data-id="'+l.id+'"><div class="lh"><b>'+esc(l.item)+'</b><button type="button" class="lnk" data-rm="'+l.id+'">Remove</button></div>'
-     +'<div class="lg"><label for="q'+l.id+'">Qty<input type="number" min="1" max="50" inputmode="numeric" id="q'+l.id+'" data-f="qty" value="'+l.qty+'"></label>'
+     +'<div class="lg"><label for="q'+l.id+'">Qty<input type="number" min="1" max="12" inputmode="numeric" id="q'+l.id+'" data-f="qty" value="'+l.qty+'"></label>'
      +'<label for="f'+l.id+'">Pickup<input type="date" min="'+today+'" id="f'+l.id+'" data-f="from" value="'+l.from+'"></label>'
      +'<label for="t'+l.id+'">Return<input type="date" min="'+today+'" id="t'+l.id+'" data-f="to" value="'+l.to+'"></label></div>'
      +'<p class="lc" id="c'+l.id+'"></p></div>';
@@ -425,7 +434,7 @@ function renderLines(){
   calc();
 }
 function calc(){
-  var school=$('#gSchool').value,mem=$('#gMember').checked,rent=0,full=0,dep=0,good=lines.length>0;
+  var school=$('#gSchool').value,mem=$('#gMember').checked,rent=0,full=0,dep=0,good=lines.length>0&&itemCount()<=12;
   lines.forEach(function(l){
     var el=$('#c'+l.id);if(!el)return;
     if(!Number.isInteger(l.qty)||l.qty<1||l.qty>50){el.textContent='Check the quantity for '+l.item+'.';good=false;return}
@@ -462,16 +471,18 @@ if(gf){
   bFrom.addEventListener('change',function(){if(bTo.value<bFrom.value)bTo.value=bFrom.value;renderBoard()});
   bTo.addEventListener('change',renderBoard);
   $('#boardList').addEventListener('click',function(e){
+    var sub=e.target.closest('[data-sub]');
+    if(sub){var name=GEARLIST()[+sub.dataset.sub].name;var selected=lines.filter(function(l){return l.item===name}).pop();if(selected){if(selected.qty>1)selected.qty--;else lines=lines.filter(function(l){return l.id!==selected.id});renderLines()}return}
     var b=e.target.closest('[data-add]');if(!b)return;
     var a=bFrom.value,t=bTo.value;if(!a||!t||t<a)return;
-    if(a<today||nDays(a,t)>120||lines.length>=12){$('#gMsg').textContent=lines.length>=12?'Add between 1 and 12 items.':'Check your pickup and return dates.';return}
+    if(a<today||nDays(a,t)>120||itemCount()>=12){$('#gMsg').textContent=itemCount()>=12?'Add between 1 and 12 items.':'Check your pickup and return dates.';return}
     lines.push({id:++uid,item:GEARLIST()[+b.dataset.add].name,qty:1,from:a,to:t});renderLines();
   });
   $('#lines').addEventListener('click',function(e){var b=e.target.closest('[data-rm]');if(!b)return;lines=lines.filter(function(l){return l.id!==+b.dataset.rm});renderLines()});
   $('#lines').addEventListener('input',function(e){
     var el=e.target,row=el.closest('.line');if(!row||!el.dataset.f)return;
     var l=lines.filter(function(x){return x.id===+row.dataset.id})[0];if(!l)return;
-    if(el.dataset.f==='qty'){l.qty=Number(el.value);if(!Number.isInteger(l.qty)||l.qty<1)l.qty=0}else l[el.dataset.f]=el.value;calc();
+    if(el.dataset.f==='qty'){l.qty=Number(el.value);if(!Number.isInteger(l.qty)||l.qty<1)l.qty=0;var remaining=12-itemCount()+l.qty;if(l.qty>remaining){l.qty=Math.max(0,remaining);el.value=l.qty}}else l[el.dataset.f]=el.value;calc();
   });
   $('#lines').addEventListener('change',function(e){
     var el=e.target,row=el.closest('.line');if(!row||!el.dataset.f)return;
@@ -510,7 +521,7 @@ function buildMerch(){
   host.innerHTML=(Y.MERCH||[]).map(function(m,i){
     var st=mState[m.name]||{on:false,qty:'1',size:'M'};
     return '<div class="mrow" data-name="'+esc(m.name)+'" data-price="'+m.price+'"'+(st.on?'':' data-off="1"')+'>'
-     +'<label class="nm" for="mc'+i+'"><input type="checkbox" id="mc'+i+'"'+(st.on?' checked':'')+'><span><b>'+esc(m.name)+'</b>$'+m.price+(m.note?' <small>'+esc(m.note)+'</small>':'')+'</span></label>'
+     +'<label class="nm" for="mc'+i+'"><input type="checkbox" id="mc'+i+'"'+(st.on?' checked':'')+'><span><b>'+esc(m.name)+'</b>$'+m.price+(m.note?' <small class="merch-note">'+esc(m.note)+'</small>':'')+'</span></label>'
      +'<label class="lab" for="mq'+i+'" style="font-size:.7rem">Qty<input type="number" id="mq'+i+'" min="1" max="10" value="'+esc(st.qty)+'" inputmode="numeric"></label>'
      +'<label class="lab" for="ms'+i+'" style="font-size:.7rem">Size<select id="ms'+i+'">'+sizes.map(function(z){return '<option'+(z===st.size?' selected':'')+'>'+z+'</option>'}).join('')+'</select></label></div>';
   }).join('');
@@ -551,7 +562,7 @@ if(mf){
 /* ---------- start ---------- */
 initSlots();
 renderNotice();renderUpcoming();applyTrips();applyCalendar();applyZelle();
-if(Y.API_URL){api('?action=content').then(function(d){if(d&&d.ok){CONTENT=d;applyAll()}}).catch(function(){})}
+if(Y.API_URL){api('?action=content').then(function(d){if(d&&d.ok){CONTENT=d;store('yoEvents',JSON.stringify(d.events||[]));applyAll()}}).catch(function(){})}
 fetchGcal();
 if(sf)loadInventory();
 })();

@@ -515,6 +515,7 @@ function handleGear_(p) {
   if (!name || !/^[^@\s]+@yale\.edu$/i.test(email)) return {ok: false, error: 'Enter your name and your Yale email (ending in @yale.edu).'};
   if (!school) return {ok: false, error: 'Choose your school so we can work out your price.'};
   if (!Array.isArray(p.lines) || !p.lines.length || p.lines.length > 12) return {ok: false, error: 'Add between 1 and 12 items.'};
+  if (p.lines.reduce(function(total, line) { return total + Number((line || {}).qty || 0); }, 0) > 12) return {ok: false, error: 'Add no more than 12 items in total.'};
 
   const t = today_();
   const lines = [];

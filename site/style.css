@@ -560,3 +560,58 @@ legend{font:700 .8rem/1 var(--label);letter-spacing:.1em;text-transform:uppercas
   .foot{background:none;color:#000}
   .foot a{color:#000}
 }
+
+/* Inner-page reading widths and compact section layouts. */
+.trips-page .title p,.trips-page #breaks>p,.trips-page #traditions>p,.trips-page #suggest>p{max-width:none}
+.weekend-layout{grid-template-columns:1fr}
+.weekend-layout>div>p{max-width:none}
+#upcoming .board-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:28px}
+#upcoming .board-list li{align-items:start}
+.headed-form>.bar{margin:-24px -24px 24px;padding:12px 24px}
+.gear-page main section:first-of-type,.join-page main section:first-of-type{margin-bottom:32px}
+.gear-page .box .in>:last-child,.join-page .box .in>:last-child{margin-bottom:0}
+.gear-selection{display:flex;justify-content:space-between;gap:16px;align-items:center;padding:12px 0;font:400 .85rem/1.5 var(--label)}
+#gearCount{white-space:nowrap}
+#gearCount.at-limit{color:#b12f27}
+.gear-buttons{display:flex;gap:8px;align-items:center}
+.people-page .title{margin-bottom:24px}
+.people-page main>.wrap{max-width:1140px}
+.people-page .grp{grid-template-columns:minmax(0,290px) minmax(0,1fr);gap:24px 40px}
+.people-page .person{min-width:0}
+.people-page .person a{overflow-wrap:anywhere}
+.constitution-page main>.wrap{max-width:960px}
+.legal{max-width:76ch;margin-inline:auto;line-height:1.75}
+.legal p{max-width:none}
+.legal h2{font-size:2rem;margin-top:40px}
+.legal h3{font-size:1.4rem;margin-top:28px}
+.document-contents{display:flex;flex-wrap:wrap;gap:10px 24px;padding:20px 0;border-bottom:1px solid var(--soft);margin-bottom:28px;font:400 .85rem/1.5 var(--label)}
+.history-page .tl{max-width:none}
+.history-page .tl li{display:grid;grid-template-columns:90px minmax(0,1fr);gap:24px;padding:20px 0;border-bottom:1px solid var(--soft)}
+.history-page .tl p{max-width:none;margin:0}
+.alumni-intro>div{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.alumni-intro .req{margin:8px 0 24px}
+.history-page #giving{margin-bottom:0}
+.history-page main{padding-bottom:28px}
+@media(max-width:760px){
+  #upcoming .board-list,.alumni-intro>div{grid-template-columns:1fr;gap:0}
+  .people-page .grp{grid-template-columns:1fr;gap:20px}
+  .history-page .tl li{grid-template-columns:64px minmax(0,1fr);gap:16px}
+}
+@media(max-width:580px){
+  .headed-form>.bar{margin:-18px -18px 18px;padding:12px 18px}
+  .gear-selection{align-items:start;font-size:.75rem}
+  .gear-buttons{gap:4px}
+}
+
+.gear-page main section:first-of-type .cols{grid-template-columns:1fr;gap:18px}
+.gear-page main section:first-of-type .box .in{display:flex;flex-wrap:wrap;gap:12px 32px;align-items:center}
+.gear-page main section:first-of-type .box .in p{margin:0}
+.join-page main section:first-of-type .cols{grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
+.join-page main section:first-of-type p{max-width:none}
+@media(max-width:760px){
+  .join-page main section:first-of-type .cols{grid-template-columns:1fr}
+}
+
+.trips-page #winterschool .cols>div>p.small{max-width:none}
+
+.mrow .merch-note{font-style:italic;color:var(--muted);font-weight:400}
