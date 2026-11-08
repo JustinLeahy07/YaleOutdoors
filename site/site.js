@@ -34,14 +34,13 @@ if(mb&&nv){
 
 /* ---------- reference-inspired home interactions ---------- */
 $$('.trail-card').forEach(function(card){
-  var toggle=$('.card-toggle',card),front=$('.card-front',card),back=$('.card-back',card),link=$('.card-go',card),pinned=false,hovered=false,linkFocused=false;
-  function update(){var on=pinned||hovered||linkFocused;card.classList.toggle('is-flipped',on);toggle.setAttribute('aria-expanded',String(on));front.setAttribute('aria-hidden',String(on));back.setAttribute('aria-hidden',String(!on))}
-  toggle.addEventListener('click',function(){pinned=!pinned;update()});
+  var front=$('.card-front',card),back=$('.card-back',card),link=$('.card-go',card),hovered=false,linkFocused=false;
+  function update(){var on=hovered||linkFocused;card.classList.toggle('is-flipped',on);front.setAttribute('aria-hidden',String(on));back.setAttribute('aria-hidden',String(!on))}
   card.addEventListener('mouseenter',function(){hovered=window.matchMedia('(hover: hover)').matches;update()});
   card.addEventListener('mouseleave',function(){hovered=false;update()});
   link.addEventListener('focus',function(){linkFocused=true;update()});
   link.addEventListener('blur',function(){linkFocused=false;update()});
-  card.addEventListener('keydown',function(e){if(e.key==='Escape'){pinned=false;hovered=false;linkFocused=false;update();toggle.focus()}});
+  card.addEventListener('keydown',function(e){if(e.key==='Escape'){hovered=false;linkFocused=false;update()}});
   update();
 });
 $$('[role="tablist"]').forEach(function(list){

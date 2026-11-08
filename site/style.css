@@ -325,10 +325,8 @@ legend{font:700 .8rem/1 var(--label);letter-spacing:.1em;text-transform:uppercas
 .section-head h2{border:0;padding:0;margin:0}
 .section-head>.eyebrow{color:var(--muted)}
 .start-section{margin-bottom:80px}
-.trail-cards{display:grid;grid-template-columns:1.1fr .85fr 1fr;gap:18px;align-items:start}
+.trail-cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:start}
 .trail-card{position:relative;min-width:0;height:310px;perspective:1000px}
-.trail-card:nth-child(2){margin-top:30px;height:280px}
-.trail-card:nth-child(3){height:310px}
 .card-turn{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.2,.65,.3,1)}
 .card-front,.card-back{position:absolute;inset:0;padding:24px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;background:var(--sage);border:1px solid #7c896b}
 .card-front h3,.card-back h3{font-size:2.5rem;letter-spacing:-.03em;position:relative;z-index:1}
@@ -341,9 +339,9 @@ legend{font:700 .8rem/1 var(--label);letter-spacing:.1em;text-transform:uppercas
 .turn-mark{position:absolute;bottom:18px;left:24px;font:400 1.5rem var(--label)}
 .card-back{transform:rotateY(180deg);background:var(--pine);color:var(--sheet);display:flex;flex-direction:column;justify-content:center;padding-bottom:68px}
 .card-back p{font-size:1.1rem;line-height:1.5;margin:20px 0 0}
-.card-toggle{position:absolute;inset:0;z-index:2;border:0;background:transparent;cursor:pointer;border-radius:0}
-.card-go{position:absolute;right:16px;bottom:16px;z-index:3;width:44px;height:44px;display:grid;place-items:center;border:1px solid currentColor;color:var(--ink);font-size:1.5rem;text-decoration:none;background:var(--sheet)}
-.card-go:hover{background:var(--sheet);color:var(--rust)}
+.card-go{position:absolute;inset:0;z-index:3;color:var(--ink);font-size:1.5rem;text-decoration:none}
+.card-go span{position:absolute;right:16px;bottom:16px;width:44px;height:44px;display:grid;place-items:center;border:1px solid currentColor;background:var(--sheet)}
+.card-go:hover{color:var(--rust)}
 .trail-card.is-flipped .card-turn{transform:rotateY(180deg)}
 .home-happenings{background:var(--pine);color:var(--sheet);display:grid;grid-template-columns:1fr 1.35fr;gap:60px;padding:42px;margin-bottom:80px;position:relative}
 .home-happenings::before{content:"";position:absolute;inset:0;background:url('img/contours.svg') left center/cover;filter:brightness(2);opacity:.13;pointer-events:none}
@@ -360,7 +358,8 @@ legend{font:700 .8rem/1 var(--label);letter-spacing:.1em;text-transform:uppercas
 .home-happenings .board-list .t{color:#e0e2ce;font-size:.85rem;margin-top:6px}
 .home-happenings .board-list a,.home-happenings .calstrip a{color:var(--sheet)}
 .home-happenings .calstrip{padding:18px 0 0;margin-top:16px;border-color:#778168;justify-content:space-between}
-.expedition-section{margin-bottom:85px}
+.expedition-section{margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid var(--ink)}
+.season-hint{font:400 .8rem/1.5 var(--label);color:var(--muted);margin:-12px 0 18px}
 .season-tabs{display:flex;gap:6px;border-bottom:1px solid var(--soft);padding-bottom:12px}
 .season-tabs button{appearance:none;background:transparent;color:var(--muted);font:700 .78rem/1.4 var(--label);letter-spacing:.02em;padding:12px 20px;border:1px solid transparent;cursor:pointer}
 .season-tabs button[aria-selected="true"]{background:var(--pine);color:var(--sheet);border-color:var(--pine)}
@@ -381,7 +380,7 @@ legend{font:700 .8rem/1 var(--label);letter-spacing:.1em;text-transform:uppercas
 .letter-signoff{display:flex;align-items:center;gap:16px;padding-top:20px;border-top:1px solid var(--soft);font:italic 1.25rem var(--display)}
 .letter-signoff img{width:44px;height:44px;object-fit:contain;filter:var(--logo-filter)}
 .letter-signoff a{text-decoration:none}
-.field-section{margin-bottom:60px}
+.field-section{margin-bottom:48px;padding-bottom:40px;border-bottom:1px solid var(--ink)}
 .field-controls{display:flex;gap:8px}
 .arrow-btn{appearance:none;width:42px;height:42px;background:none;color:var(--ink);border:1px solid var(--soft);font:400 1.2rem var(--label);cursor:pointer}
 .arrow-btn:hover{background:var(--pine);color:var(--sheet);border-color:var(--pine)}
@@ -396,7 +395,7 @@ legend{font:700 .8rem/1 var(--label);letter-spacing:.1em;text-transform:uppercas
 .field-photos .empty{inset:10px;border-color:#8b947b;background:url('img/contours.svg') center/cover}
 .field-photos .empty img{width:72px;height:72px}
 .field-photos figcaption{font:700 .72rem/1.4 var(--label);color:var(--ink);text-transform:uppercase;padding-top:12px;letter-spacing:.03em}
-.home-links{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin:20px 0 0}
+.home-links{padding-top:24px;border-top:1px solid var(--ink);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin:20px 0 0}
 .home-links>a{display:grid;grid-template-columns:1fr auto;gap:8px;border-top:1px solid var(--ink);padding:18px 0 24px;color:var(--ink);text-decoration:none}
 .home-links .eyebrow{grid-column:1/-1;color:var(--muted)}
 .home-links strong{font:400 1.6rem/1.2 var(--display)}
@@ -427,8 +426,7 @@ legend{font:700 .8rem/1 var(--label);letter-spacing:.1em;text-transform:uppercas
   .hero h1{font-size:clamp(3.8rem,8.2vw,5.8rem)}
   .hero-actions{gap:12px}
   .nav a{padding:12px 10px}
-  .trail-card,.trail-card:nth-child(3){height:280px}
-  .trail-card:nth-child(2){height:250px}
+  .trail-card{height:280px}
   .card-front,.card-back{padding:20px}
   .card-front h3,.card-back h3{font-size:2rem}
   .card-back{padding-bottom:65px}
@@ -497,7 +495,7 @@ legend{font:700 .8rem/1 var(--label);letter-spacing:.1em;text-transform:uppercas
   .section-head>.eyebrow{font-size:.6rem;text-align:right;max-width:14ch}
   .section-head h2{font-size:2rem}
   .trail-cards{grid-template-columns:1fr;gap:16px}
-  .trail-card,.trail-card:nth-child(2),.trail-card:nth-child(3){height:220px;margin:0}
+  .trail-card{height:220px;margin:0}
   .card-front,.card-back{padding:22px}
   .card-front h3,.card-back h3{font-size:2.65rem;max-width:8ch}
   .card-front img{width:57%;height:155px;right:12px;bottom:8px}

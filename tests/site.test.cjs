@@ -162,19 +162,20 @@ test('expedition tabs support click, arrow-key wrapping, Home, and End', () => {
   assert.equal(tabs[1].tabIndex, -1);
 });
 
-test('flip cards reveal details on tap/keyboard activation and close with Escape', () => {
-  const toggle = control(), link = control(), front = control(), back = control();
-  const parts = { '.card-toggle': toggle, '.card-go': link, '.card-front': front, '.card-back': back };
+test('linked cards reveal details on keyboard focus and close with Escape or blur', () => {
+  const link = control(), front = control(), back = control();
+  const parts = { '.card-go': link, '.card-front': front, '.card-back': back };
   const card = control();
   card.querySelector = selector => parts[selector];
   card.classList = { toggle(name, value) { card.flipped = value; } };
   app({ '.trail-card': [card] });
   assert.equal(back.attributes['aria-hidden'], 'true');
-  toggle.listeners.click();
+  link.listeners.focus();
   assert.equal(card.flipped, true);
-  assert.equal(toggle.attributes['aria-expanded'], 'true');
   assert.equal(front.attributes['aria-hidden'], 'true');
   card.listeners.keydown({ key: 'Escape' });
   assert.equal(card.flipped, false);
-  assert.equal(toggle.focused, true);
+  link.listeners.focus();
+  link.listeners.blur();
+  assert.equal(card.flipped, false);
 });
