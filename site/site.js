@@ -10,7 +10,11 @@ function iso(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate
 var today=iso(new Date());
 function plus(s,n){var d=new Date(s+'T12:00:00');d.setDate(d.getDate()+n);return iso(d)}
 function eachDay(a,b){var o=[],d=new Date(a+'T12:00:00'),e=new Date(b+'T12:00:00'),n=0;while(d<=e&&n<400){o.push(iso(d));d.setDate(d.getDate()+1);n++}return o}
-function nDays(a,b){return eachDay(a,b).length}
+function nDays(a,b){
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(a||'')||!/^\d{4}-\d{2}-\d{2}$/.test(b||''))return 0;
+  var start=Date.parse(a+'T00:00:00Z'),end=Date.parse(b+'T00:00:00Z');
+  return Number.isFinite(start)&&Number.isFinite(end)&&end>=start?Math.round((end-start)/86400000)+1:0;
+}
 function money(n){return '$'+(Math.round(n*100)/100).toFixed(2).replace(/\.00$/,'')}
 function plural(n,w){return n+' '+w+(n===1?'':'s')}
 function yale(e){return /^[^@\s]+@yale\.edu$/i.test(e)}
@@ -21,7 +25,44 @@ function store(k,v){try{if(v===undefined)return sessionStorage.getItem(k);if(v==
 
 /* ---------- menu ---------- */
 var mb=$('#menuBtn'),nv=$('#nav');
-if(mb&&nv){mb.addEventListener('click',function(){var o=nv.classList.toggle('open');mb.setAttribute('aria-expanded',o)})}
+function closeMenu(){if(!mb||!nv)return;nv.classList.remove('open');mb.setAttribute('aria-expanded','false');var mark=$('span',mb);if(mark)mark.textContent='+'}
+if(mb&&nv){
+  mb.addEventListener('click',function(){var o=nv.classList.toggle('open');mb.setAttribute('aria-expanded',String(o));var mark=$('span',mb);if(mark)mark.textContent=o?'−':'+'});
+  nv.addEventListener('click',function(e){if(e.target.closest('a'))closeMenu()});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&nv.classList.contains('open')){closeMenu();mb.focus()}});
+}
+
+/* ---------- reference-inspired home interactions ---------- */
+$$('.trail-card').forEach(function(card){
+  var toggle=$('.card-toggle',card),front=$('.card-front',card),back=$('.card-back',card),link=$('.card-go',card),pinned=false,hovered=false,linkFocused=false;
+  function update(){var on=pinned||hovered||linkFocused;card.classList.toggle('is-flipped',on);toggle.setAttribute('aria-expanded',String(on));front.setAttribute('aria-hidden',String(on));back.setAttribute('aria-hidden',String(!on))}
+  toggle.addEventListener('click',function(){pinned=!pinned;update()});
+  card.addEventListener('mouseenter',function(){hovered=window.matchMedia('(hover: hover)').matches;update()});
+  card.addEventListener('mouseleave',function(){hovered=false;update()});
+  link.addEventListener('focus',function(){linkFocused=true;update()});
+  link.addEventListener('blur',function(){linkFocused=false;update()});
+  card.addEventListener('keydown',function(e){if(e.key==='Escape'){pinned=false;hovered=false;linkFocused=false;update();toggle.focus()}});
+  update();
+});
+$$('[role="tablist"]').forEach(function(list){
+  var tabs=$$('[role="tab"]',list);
+  function select(tab,focus){tabs.forEach(function(t){var on=t===tab;t.setAttribute('aria-selected',String(on));t.tabIndex=on?0:-1;var panel=document.getElementById(t.getAttribute('aria-controls'));if(panel)panel.hidden=!on});if(focus)tab.focus()}
+  tabs.forEach(function(tab,i){
+    tab.addEventListener('click',function(){select(tab,false)});
+    tab.addEventListener('keydown',function(e){
+      var next;if(e.key==='ArrowRight')next=(i+1)%tabs.length;else if(e.key==='ArrowLeft')next=(i+tabs.length-1)%tabs.length;else if(e.key==='Home')next=0;else if(e.key==='End')next=tabs.length-1;
+      if(next!==undefined){e.preventDefault();select(tabs[next],true)}
+    });
+  });
+});
+var field=$('#fieldPhotos');
+if(field){
+  var prev=$('[data-field-prev]'),next=$('[data-field-next]');
+  function fieldButtons(){prev.disabled=field.scrollLeft<=2;next.disabled=field.scrollLeft+field.clientWidth>=field.scrollWidth-2}
+  function moveField(dir){field.scrollBy({left:dir*(field.firstElementChild.getBoundingClientRect().width+22),behavior:window.matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})}
+  prev.addEventListener('click',function(){moveField(-1)});next.addEventListener('click',function(){moveField(1)});
+  field.addEventListener('scroll',fieldButtons,{passive:true});window.addEventListener('resize',fieldButtons);fieldButtons();
+}
 
 /* ---------- backend ---------- */
 var CONTENT=null;
@@ -33,6 +74,7 @@ var driveUrl=function(p){return 'https://drive.google.com/thumbnail?id='+encodeU
 function showPic(slot,src,caption){
   var mat=$('.mat',slot),old=$('img.pic',slot);if(old)old.remove();
   var im=document.createElement('img');im.className='pic';im.alt=slot.dataset.alt||'';im.loading='lazy';im.src=src;mat.insertBefore(im,mat.firstChild);
+  im.onerror=function(){if(im.parentNode){im.remove();if(!$('img.pic',slot))slot.classList.remove('has')}};
   slot.classList.add('has');
   var fc=$('figcaption',slot);if(fc&&caption!=null)fc.textContent=caption;
 }
@@ -222,11 +264,15 @@ function outbox(host,m,intro){
 }
 function deliver(host,payload,fallback,intro,doneHtml,onDone){
   if(!Y.API_URL){outbox(host,fallback,intro);return}
+  if(host.dataset.sending)return;
+  host.dataset.sending='1';
+  var form=host.closest('form'),buttons=form?$$('button[type="submit"]',form):[];
+  buttons.forEach(function(b){b.disabled=true});
   host.innerHTML='<p class="msg">Sending...</p>';
   post(payload).then(function(res){
     if(res&&res.ok){host.innerHTML='<div class="out" role="status">'+doneHtml(res)+'</div>';if(onDone)onDone(res)}
     else{host.innerHTML='<p class="msg" role="alert">'+esc((res&&res.error)||'That did not go through.')+'</p>';if(res&&res.stale)loadInventory()}
-  }).catch(function(){outbox(host,fallback,'We couldn’t reach the server. Email it instead.')});
+  }).catch(function(){outbox(host,fallback,'We couldn’t reach the server. Email it instead.')}).finally(function(){delete host.dataset.sending;buttons.forEach(function(b){b.disabled=false})});
 }
 function copyBtn(id,getText,label){
   var b=$(id);if(!b)return;
@@ -285,12 +331,16 @@ if(rf)rf.addEventListener('submit',function(e){
 
 /* ---------- Suggest a trip ---------- */
 var GEARLIST=function(){return (Y.GEAR||[])};
-function buildEq(){var g=$('#eqGrid');if(!g)return;g.innerHTML=GEARLIST().map(function(x,i){return '<label for="eq'+i+'"><input type="number" id="eq'+i+'" min="0" max="50" value="0" inputmode="numeric" data-item="'+esc(x.name)+'">'+esc(x.name)+'</label>'}).join('')}
-var sf=$('#sForm'),dateRows=$('#dateRows');
+function buildEq(){
+  var g=$('#eqGrid');if(!g)return;
+  var chosen=Object.create(null);$$('input',g).forEach(function(input){chosen[input.dataset.item]=input.value});
+  g.innerHTML=GEARLIST().map(function(x,i){return '<label for="eq'+i+'"><input type="number" id="eq'+i+'" min="0" max="50" value="'+esc(chosen[x.name]||'0')+'" inputmode="numeric" data-item="'+esc(x.name)+'">'+esc(x.name)+'</label>'}).join('');
+}
+var sf=$('#sForm'),dateRows=$('#dateRows'),dateRowId=0;
 function addDateRow(){
   if($$('.dr',dateRows).length>=4)return;
-  var n=$$('.dr',dateRows).length+1,row=document.createElement('div');row.className='dr';
-  row.innerHTML='<label for="dfrom'+n+'">Start<input type="date" id="dfrom'+n+'" min="'+today+'"></label><label for="dto'+n+'">End, if more than a day<input type="date" id="dto'+n+'" min="'+today+'"></label>'+(n>1?'<button type="button" class="lnk" data-rm>Remove</button>':'<span></span>');
+  var first=!dateRows.children.length,n=++dateRowId,row=document.createElement('div');row.className='dr';
+  row.innerHTML='<label for="dfrom'+n+'">Start<input type="date" id="dfrom'+n+'" min="'+today+'"></label><label for="dto'+n+'">End, if more than a day<input type="date" id="dto'+n+'" min="'+today+'"></label>'+(first?'<span></span>':'<button type="button" class="lnk" data-rm>Remove</button>');
   dateRows.appendChild(row);
 }
 if(sf){
@@ -303,7 +353,8 @@ if(sf){
     if(!name||!yale(mail)){msg.textContent='Add your name and your Yale email (ending in @yale.edu).';return}
     if(idea.length<15){msg.textContent='Tell us a bit more about the idea, at least a sentence or two.';return}
     msg.textContent='';
-    var dates=$$('.dr',dateRows).map(function(r){var i=$$('input',r);return {from:i[0].value,to:i[1].value}}).filter(function(d){return d.from});
+    var dates=$$('.dr',dateRows).map(function(r){var i=$$('input',r);return {from:i[0].value,to:i[1].value}}).filter(function(d){return d.from||d.to});
+    if(dates.some(function(d){return !d.from||d.from<today||(d.to&&d.to<d.from)})){msg.textContent='Check your dates. Return can’t be before pickup.';return}
     var equipment=$$('#eqGrid input').map(function(i){return {item:i.dataset.item,qty:+i.value||0}}).filter(function(x){return x.qty>0});
     var modes=$$('#trModes input:checked').map(function(c){return c.parentNode.textContent.trim()});
     var kind=$('#sKind').value,where=$('#sWhere').value.trim(),school=$('#sSchool').value;
@@ -347,8 +398,8 @@ function buildBoard(){
 }
 function renderBoard(){
   if(!bFrom)return;
-  var a=bFrom.value,b=bTo.value,ok=a&&b&&b>=a;
-  $('#boardMsg').textContent=ok?'Showing '+plural(nDays(a,b),'day')+' of availability.':'Return date must be on or after pickup.';
+  var a=bFrom.value,b=bTo.value,days=nDays(a,b),ok=days>0&&days<=120&&a>=today;
+  $('#boardMsg').textContent=ok?'Showing '+plural(days,'day')+' of availability.':days>120?'Rentals longer than four months need to be arranged with the Gear Manager directly.':a<today?'Pickup is in the past.':'Return date must be on or after pickup.';
   GEARLIST().forEach(function(g,i){
     var f=ok?free(g.name,a,b,-1):g.owned,el=$('#gf'+i);if(!el)return;
     el.textContent=f+' of '+g.owned+' free';
@@ -367,7 +418,7 @@ function renderLines(){
   if(!lines.length)box.innerHTML='<p class="empty-note">Add gear from the board to start your request.</p>';
   else box.innerHTML=lines.map(function(l){
     return '<div class="line" data-id="'+l.id+'"><div class="lh"><b>'+esc(l.item)+'</b><button type="button" class="lnk" data-rm="'+l.id+'">Remove</button></div>'
-     +'<div class="lg"><label for="q'+l.id+'">Qty<input type="number" min="1" inputmode="numeric" id="q'+l.id+'" data-f="qty" value="'+l.qty+'"></label>'
+     +'<div class="lg"><label for="q'+l.id+'">Qty<input type="number" min="1" max="50" inputmode="numeric" id="q'+l.id+'" data-f="qty" value="'+l.qty+'"></label>'
      +'<label for="f'+l.id+'">Pickup<input type="date" min="'+today+'" id="f'+l.id+'" data-f="from" value="'+l.from+'"></label>'
      +'<label for="t'+l.id+'">Return<input type="date" min="'+today+'" id="t'+l.id+'" data-f="to" value="'+l.to+'"></label></div>'
      +'<p class="lc" id="c'+l.id+'"></p></div>';
@@ -378,7 +429,9 @@ function calc(){
   var school=$('#gSchool').value,mem=$('#gMember').checked,rent=0,full=0,dep=0,good=lines.length>0;
   lines.forEach(function(l){
     var el=$('#c'+l.id);if(!el)return;
+    if(!Number.isInteger(l.qty)||l.qty<1||l.qty>50){el.textContent='Check the quantity for '+l.item+'.';good=false;return}
     if(!l.from||!l.to||l.to<l.from||l.from<today){el.textContent='Check your dates. Return can’t be before pickup.';good=false;return}
+    if(nDays(l.from,l.to)>120){el.textContent='Rentals longer than four months need to be arranged with the Gear Manager directly.';good=false;return}
     var f=free(l.item,l.from,l.to,l.id);
     if(f<1){el.textContent='None free for these dates.';good=false;return}
     if(l.qty>f){el.textContent='Only '+f+' free for these dates.';good=false;return}
@@ -397,7 +450,7 @@ function calc(){
 function loadInventory(){
   if(!Y.API_URL)return;
   api('?action=inventory').then(function(d){
-    if(!d||!d.ok||!d.items||!d.items.length)return;
+    if(!d||!d.ok||!Array.isArray(d.items))return;
     Y.GEAR=d.items;BLOCKED=d.blocked||[];
     if(d.settings){GRAD=d.settings.gradMultiplier||GRAD;MEM=d.settings.memberMultiplier==null?MEM:d.settings.memberMultiplier}
     buildBoard();buildEq();
@@ -412,13 +465,14 @@ if(gf){
   $('#boardList').addEventListener('click',function(e){
     var b=e.target.closest('[data-add]');if(!b)return;
     var a=bFrom.value,t=bTo.value;if(!a||!t||t<a)return;
+    if(a<today||nDays(a,t)>120||lines.length>=12){$('#gMsg').textContent=lines.length>=12?'Add between 1 and 12 items.':'Check your pickup and return dates.';return}
     lines.push({id:++uid,item:GEARLIST()[+b.dataset.add].name,qty:1,from:a,to:t});renderLines();
   });
   $('#lines').addEventListener('click',function(e){var b=e.target.closest('[data-rm]');if(!b)return;lines=lines.filter(function(l){return l.id!==+b.dataset.rm});renderLines()});
   $('#lines').addEventListener('input',function(e){
     var el=e.target,row=el.closest('.line');if(!row||!el.dataset.f)return;
     var l=lines.filter(function(x){return x.id===+row.dataset.id})[0];if(!l)return;
-    if(el.dataset.f==='qty')l.qty=Math.max(1,parseInt(el.value,10)||1);else l[el.dataset.f]=el.value;calc();
+    if(el.dataset.f==='qty'){l.qty=Number(el.value);if(!Number.isInteger(l.qty)||l.qty<1)l.qty=0}else l[el.dataset.f]=el.value;calc();
   });
   $('#lines').addEventListener('change',function(e){
     var el=e.target,row=el.closest('.line');if(!row||!el.dataset.f)return;
@@ -500,4 +554,5 @@ initSlots();
 renderNotice();renderUpcoming();applyTrips();applyCalendar();applyZelle();
 if(Y.API_URL){api('?action=content').then(function(d){if(d&&d.ok){CONTENT=d;applyAll()}}).catch(function(){})}
 fetchGcal();
+if(sf)loadInventory();
 })();

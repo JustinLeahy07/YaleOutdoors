@@ -3,7 +3,6 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="claude:viewport-fit-sides" content="cover">
 <title>Yale Outdoors</title>
 <meta name="description" content="Yale Outdoors, the outing club at Yale: trips, gear rentals and outdoor skills.">
 <link rel="icon" href="img/favicon.png">
@@ -11,55 +10,113 @@
 <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=IM+Fell+English:ital@0;1&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="home">
 <a class="skip" href="#main">Skip to content</a>
 <header class="top"><div class="wrap">
-<div class="strap"><span>Yale Outdoors &middot; New Haven, Connecticut</span><span>Outdoors at Yale since 1936</span></div>
+<div class="strap"><span>New Haven, Connecticut</span><span>Outdoors at Yale since 1936</span></div>
 <a class="mast" href="index.html" aria-label="Yale Outdoors, home"><img src="img/logo-black.png" alt="Yale Outdoors" width="1500" height="803"></a>
-<button type="button" class="menu" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu</button>
+<button type="button" class="menu" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu <span aria-hidden="true">+</span></button>
 <nav class="nav" id="nav" aria-label="Main"><a href="trips.html">Trips</a><a href="gear.html">Gear</a><a href="join.html">Join</a><a href="people.html">People</a><a href="library.html">Library</a><a href="history.html">History</a></nav>
 </div></header>
-<main id="main"><div class="wrap">
-
-<div class="cols stretch" style="margin-bottom:40px">
-<section style="margin:0">
-<p class="lede">Offering trips, events, and good-spirited community since who knows when. Join us and get outside!</p>
-<p>Yale Outdoors is the university&rsquo;s outing club. We lead day trips from New Haven and bigger trips over October, Winter and Spring Break, rent camping gear for a few dollars a day, and teach one another outdoor skills. You do not need experience. Most people who come the first time have never done it.</p>
-<div class="row" style="margin-top:6px">
-<a class="btn solid" href="https://forms.gle/SaASJQefPbpXcXjK9">Get the newsletter</a>
-<a class="btn" href="https://tinyurl.com/ycyogroupme">Join the GroupMe</a>
-<a class="btn" href="https://www.instagram.com/yaleoutdoors/">Instagram</a>
+<main id="main">
+<section class="hero wrap" aria-labelledby="homeTitle">
+<div class="hero-copy">
+<p class="eyebrow">Outdoors at Yale since 1936</p>
+<h1 id="homeTitle">Join us and<br><em>get outside!</em></h1>
+<p class="hero-intro">Offering trips, events, and good-spirited community since who knows when.</p>
+<div class="row hero-actions">
+<a class="btn solid" href="https://forms.gle/SaASJQefPbpXcXjK9">Get the newsletter <span aria-hidden="true">↗</span></a>
+<a class="text-link" href="https://tinyurl.com/ycyogroupme">Join the GroupMe <span aria-hidden="true">↗</span></a>
+</div>
+</div>
+<div class="hero-art">
+<img class="landscape-sketch" src="img/sketch-ridge.svg" alt="Line sketch of a winding trail through pines and mountains" width="540" height="420" fetchpriority="high">
+<span class="place-label">New Haven, Connecticut</span>
+<a class="hero-merch" href="gear.html#merch">Merch <span aria-hidden="true">↗</span></a>
 </div>
 </section>
-<aside class="box calbox" id="homeCal" aria-label="Club calendar">
-<div class="bar">Club calendar</div>
-<div class="agwrap"><ul class="board-list agenda" id="notice"></ul></div>
-<div class="calstrip"><a href="https://calendar.google.com/calendar/embed?src=c_45a252457e91d6752c809c38ce0ceed0f1c3f7290dda2dc1db5af48b756c6b14%40group.calendar.google.com">Open calendar</a><a href="https://calendar.google.com/calendar/render?cid=c_45a252457e91d6752c809c38ce0ceed0f1c3f7290dda2dc1db5af48b756c6b14%40group.calendar.google.com">Add to mine</a></div>
+
+<div class="wrap">
+<section class="start-section" aria-labelledby="startTitle">
+<div class="section-head"><h2 id="startTitle">Where to start</h2><span class="eyebrow">No experience needed</span></div>
+<div class="trail-cards">
+<article class="trail-card trail-trips">
+<div class="card-turn">
+<div class="card-front"><span class="card-number">01 /</span><h3>Trips</h3><img src="img/sketch-ridge.svg" alt="" width="540" height="420" loading="lazy"><span class="turn-mark" aria-hidden="true">+</span></div>
+<div class="card-back"><h3>Trips</h3><p>Weekend outings, the three break expeditions, and how to suggest your own.</p></div>
+</div>
+<button class="card-toggle" type="button" aria-expanded="false" aria-label="More about trips"></button>
+<a class="card-go" href="trips.html" aria-label="Explore trips"><span aria-hidden="true">↗</span></a>
+</article>
+<article class="trail-card trail-gear">
+<div class="card-turn">
+<div class="card-front"><span class="card-number">02 /</span><h3>Gear</h3><img src="img/sketch-pack.svg" alt="" width="300" height="330" loading="lazy"><span class="turn-mark" aria-hidden="true">+</span></div>
+<div class="card-back"><h3>Gear</h3><p>See what is free on your dates and put in a rental request.</p></div>
+</div>
+<button class="card-toggle" type="button" aria-expanded="false" aria-label="More about gear"></button>
+<a class="card-go" href="gear.html" aria-label="Explore gear"><span aria-hidden="true">↗</span></a>
+</article>
+<article class="trail-card trail-join">
+<div class="card-turn">
+<div class="card-front"><span class="card-number">03 /</span><h3>Join and lead</h3><img src="img/sketch-camp.svg" alt="" width="440" height="310" loading="lazy"><span class="turn-mark" aria-hidden="true">+</span></div>
+<div class="card-back"><h3>Join and lead</h3><p>From the mailing list to Pnuckle to Leader to the Board.</p></div>
+</div>
+<button class="card-toggle" type="button" aria-expanded="false" aria-label="More about joining and leading"></button>
+<a class="card-go" href="join.html" aria-label="Explore joining and leading"><span aria-hidden="true">↗</span></a>
+</article>
+</div>
+</section>
+
+<section class="home-happenings" aria-labelledby="happeningsTitle">
+<div class="happenings-intro"><p class="eyebrow">Club calendar</p><h2 id="happeningsTitle">Coming up</h2><p>Day trips most weeks, three break expeditions a year, and room for your idea.</p><a class="text-link" href="trips.html#suggest">Suggest a trip <span aria-hidden="true">↗</span></a></div>
+<aside class="calbox" id="homeCal" aria-label="Club calendar">
+<div class="agwrap"><ul class="board-list agenda" id="notice" aria-live="polite"></ul></div>
+<div class="calstrip"><a href="https://calendar.google.com/calendar/embed?src=c_45a252457e91d6752c809c38ce0ceed0f1c3f7290dda2dc1db5af48b756c6b14%40group.calendar.google.com">Open calendar ↗</a><a href="https://calendar.google.com/calendar/render?cid=c_45a252457e91d6752c809c38ce0ceed0f1c3f7290dda2dc1db5af48b756c6b14%40group.calendar.google.com">Add to mine +</a></div>
 </aside>
-</div>
-
-<section>
-<h2>Where to start</h2>
-<ul class="toc">
-<li><a href="trips.html"><b>Trips</b><span>Weekend outings, the three break expeditions, and how to suggest your own.</span></a></li>
-<li><a href="gear.html"><b>Gear</b><span>See what is free on your dates and put in a rental request.</span></a></li>
-<li><a href="join.html"><b>Join and lead</b><span>From the mailing list to Pnuckle to Leader to the Board.</span></a></li>
-<li><a href="people.html"><b>People</b><span>This year&rsquo;s board and who to ask about what.</span></a></li>
-<li><a href="library.html"><b>Library</b><span>Constitution, prospectus, trip reports and the trip report template.</span></a></li>
-<li><a href="history.html"><b>History</b><span>The club since the 1930s, and where alumni can reach us.</span></a></li>
-</ul>
 </section>
 
-<section>
-<h2>From the field</h2>
-<div class="photos3">
-<figure class="slot wide" data-slot="home-1" data-alt="Yale Outdoors members on a trail" data-cap="Add a photo from the last trip"><div class="mat"><div class="empty"><img src="img/tree-black.png" alt=""><span>Photo to come</span></div></div><figcaption></figcaption><div class="tools"></div></figure>
-<figure class="slot wide" data-slot="home-2" data-alt="Yale Outdoors members at camp" data-cap="Add a photo from the last trip"><div class="mat"><div class="empty"><img src="img/tree-black.png" alt=""><span>Photo to come</span></div></div><figcaption></figcaption><div class="tools"></div></figure>
-<figure class="slot wide" data-slot="home-3" data-alt="Yale Outdoors members on the water" data-cap="Add a photo from the last trip"><div class="mat"><div class="empty"><img src="img/tree-black.png" alt=""><span>Photo to come</span></div></div><figcaption></figcaption><div class="tools"></div></figure>
+<section class="expedition-section" aria-labelledby="expeditionTitle">
+<div class="section-head"><h2 id="expeditionTitle">Break expeditions</h2><a class="text-link" href="trips.html#breaks">Trips <span aria-hidden="true">↗</span></a></div>
+<div class="season-tabs" role="tablist" aria-label="Break expeditions">
+<button type="button" role="tab" id="tab-october" aria-controls="panel-october" aria-selected="true" tabindex="0">October Break</button>
+<button type="button" role="tab" id="tab-winter" aria-controls="panel-winter" aria-selected="false" tabindex="-1">Winter Break</button>
+<button type="button" role="tab" id="tab-spring" aria-controls="panel-spring" aria-selected="false" tabindex="-1">Spring Break</button>
+</div>
+<div class="season-panel" id="panel-october" role="tabpanel" aria-labelledby="tab-october" tabindex="0">
+<img src="img/sketch-camp.svg" alt="Line sketch of a tent, pines, and a campfire" width="440" height="310" loading="lazy">
+<div><span class="stamp" data-trip-status="october">Details coming soon</span><h3>October Break</h3><p>A long weekend in the mountains while the leaves are turning. Past October Break trips have been backpacking trips in the Northeast.</p><a class="text-link" href="trips.html#october">October Break <span aria-hidden="true">↗</span></a></div>
+</div>
+<div class="season-panel" id="panel-winter" role="tabpanel" aria-labelledby="tab-winter" tabindex="0" hidden>
+<img src="img/sketch-winter.svg" alt="Line sketch of snowy mountain peaks and pines" width="440" height="340" loading="lazy">
+<div><span class="stamp" data-trip-status="winter">Details coming soon</span><h3>Winter Break</h3><p>Over the long break the club has gone as far as the Channel Islands in California, reached by boat from Ventura.</p><a class="text-link" href="trips.html#winter">Winter Break <span aria-hidden="true">↗</span></a></div>
+</div>
+<div class="season-panel" id="panel-spring" role="tabpanel" aria-labelledby="tab-spring" tabindex="0" hidden>
+<img src="img/sketch-canoe.svg" alt="Line sketch of a canoe and paddles on a mountain lake" width="440" height="300" loading="lazy">
+<div><span class="stamp" data-trip-status="spring">Details coming soon</span><h3>Spring Break</h3><p>The big spring expedition, planned over the winter by the Expedition Coordinators with the trip leaders.</p><a class="text-link" href="trips.html#spring">Spring Break <span aria-hidden="true">↗</span></a></div>
 </div>
 </section>
 
-</div></main>
+<section class="board-letter" aria-labelledby="boardTitle">
+<figure class="slot board-photo" data-slot="home-board" data-alt="The Yale Outdoors board" data-cap="The board"><div class="mat"><div class="empty"><img src="img/tree-black.png" alt=""><span>Photo to come</span></div></div><figcaption></figcaption><div class="tools"></div></figure>
+<div class="letter-sheet"><p class="eyebrow">Yale Outdoors</p><h2 id="boardTitle">A message from the board</h2><p class="letter-placeholder">Welcome letter to come.</p><div class="letter-signoff"><img src="img/tree-black.png" alt="" width="50" height="50"><a href="people.html">The board <span aria-hidden="true">↗</span></a></div></div>
+</section>
+
+<section class="field-section" aria-labelledby="fieldTitle">
+<div class="section-head"><h2 id="fieldTitle">From the field</h2><div class="field-controls"><button class="arrow-btn" type="button" data-field-prev aria-label="Previous photographs" aria-controls="fieldPhotos">←</button><button class="arrow-btn" type="button" data-field-next aria-label="Next photographs" aria-controls="fieldPhotos">→</button></div></div>
+<div class="field-photos" id="fieldPhotos" role="region" aria-label="Trip photographs" tabindex="0">
+<figure class="slot" data-slot="home-1" data-alt="Yale Outdoors members on a trail" data-cap="Weekend trips"><div class="mat"><div class="empty"><img src="img/tree-black.png" alt=""><span>Photo to come</span></div></div><figcaption></figcaption><div class="tools"></div></figure>
+<figure class="slot tall" data-slot="home-2" data-alt="Yale Outdoors members at camp" data-cap="Break expeditions"><div class="mat"><div class="empty"><img src="img/tree-black.png" alt=""><span>Photo to come</span></div></div><figcaption></figcaption><div class="tools"></div></figure>
+<figure class="slot" data-slot="home-3" data-alt="Yale Outdoors members on the water" data-cap="Traditions"><div class="mat"><div class="empty"><img src="img/tree-black.png" alt=""><span>Photo to come</span></div></div><figcaption></figcaption><div class="tools"></div></figure>
+</div>
+</section>
+
+<nav class="home-links" aria-label="More about Yale Outdoors">
+<a href="people.html"><span class="eyebrow">People</span><strong>This year’s board</strong><span aria-hidden="true">↗</span></a>
+<a href="library.html"><span class="eyebrow">Library</span><strong>Trip reports</strong><span aria-hidden="true">↗</span></a>
+<a href="history.html"><span class="eyebrow">History</span><strong>The club since the 1930s</strong><span aria-hidden="true">↗</span></a>
+</nav>
+</div>
+</main>
 <footer class="foot"><div class="wrap">
 <div class="grid">
 <div><h4>Yale Outdoors</h4>

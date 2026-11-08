@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="540" height="420" viewBox="0 0 540 420" fill="none" stroke="#354b37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <defs>
+    <g id="pine">
+      <path d="M28 0 18 27l7-4L10 49l12-5L4 74l17-6L0 101l26-9M28 0l11 27-8-4 17 28-15-7 22 31-22-7 24 35-28-11M28 8l1 106"/>
+      <path d="m24 34 4 5m-9 17 9 5m-17 20 18 6m6-43-6 6m13 11-13 8m17 17-17 7" stroke-width="1"/>
+    </g>
+  </defs>
+  <g stroke="#7c8467" stroke-width="1.4">
+    <path d="m40 219 39-39 25 8 55-76 23 23 28-11 41 57M332 119l30-30 47 62 28-10 60 75"/>
+    <path d="m142 137 18-25 9 24 13-1m198-21 13 22 11-3 5 18"/>
+  </g>
+  <path d="m85 267 71-76 25 11 39-63 24 17 59-88 37 61 13-8 74 114 24-9 47 53"/>
+  <path d="m274 113 29-45 15 38-9 9 18 7 13 7m-120 10 9 26 15-9m-63 46 12 3 11-14"/>
+  <path d="m304 124-16 33-12 8-18 39-17 14-12 26m106-98 12 25 17 15 15 33 17 13 13 26"/>
+  <g stroke-width="1" opacity=".8">
+    <path d="m294 145-8 27m2 1-10 25m1-8-17 33m44-84 7 28m-2-10 10 26m-67 20-15 32m101-58 15 33m-2-12 19 29m-144-65-18 37m4-6-13 29m-11-35-17 30m237-16 14 21m-11-6 18 28"/>
+  </g>
+  <path d="M65 312c68-32 118-34 169-18 33 11 63 7 90-9 44-26 101-30 170-11" stroke="#7c8467" stroke-width="1.4"/>
+  <path d="M284 276c-5 19-58 31-48 49 8 15 71 15 63 36-6 16-62 30-78 48M295 278c0 21-37 29-26 43 14 18 80 16 69 43-7 18-37 31-47 45"/>
+  <use href="#pine" transform="translate(39 233) scale(1.25)"/>
+  <use href="#pine" transform="translate(112 271) scale(.75)" stroke-width="2.3"/>
+  <use href="#pine" transform="translate(418 207) scale(1.3)"/>
+  <use href="#pine" transform="translate(378 270) scale(.65)" stroke-width="2.5"/>
+  <g stroke="#7c8467" stroke-width="1.2">
+    <path d="m33 384 5-12 4 9 5-17m74 26 5-15 4 12 8-11m245-15 5-15 5 12 4-19m77 18 7-15 3 9 6-17M62 391l46-3m237 8 36-4m-203-52 27 1m-2 33 13 2m151-53 18-4"/>
+  </g>
+</svg>
